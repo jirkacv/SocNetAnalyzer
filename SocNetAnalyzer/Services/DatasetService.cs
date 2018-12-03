@@ -54,7 +54,7 @@ namespace SocNetAnalyzer.Services
             return new DatasetStatistics
             {
                 AverageFriendCount = this.datasetRepository.GetAverageFriendCountInDataset(datasetId),
-                UniqueUsers = this.datasetRepository.GetUniqueUsersInDataset(datasetId),
+                UniqueUsers = this.datasetRepository.GetUniqueUserCountInDataset(datasetId),
                 SampleSize = this.datasetRepository.GetDatasetConnectionCount(datasetId),
             };
         }

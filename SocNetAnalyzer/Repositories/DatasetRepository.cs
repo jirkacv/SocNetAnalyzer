@@ -14,7 +14,10 @@ namespace SocNetAnalyzer.Repositories
         Task<Dataset> CreateDataset(string name);
         Task ImportDataset(int datasetId, IEnumerable<Tuple<int, int>> connections);
 
-        int GetUniqueUsersInDataset(int datasetId);
+        List<int> GetUniqueUsersInDataset(int datasetId);
+        List<Tuple<int, int>> GetConnections(int datasetId);
+
+        int GetUniqueUserCountInDataset(int datasetId);
         double GetAverageFriendCountInDataset(int datasetId);
         int GetDatasetConnectionCount(int datasetId);
 
@@ -83,11 +86,20 @@ namespace SocNetAnalyzer.Repositories
             }
         }
 
-        public int GetUniqueUsersInDataset(int datasetId)
+        public int GetUniqueUserCountInDataset(int datasetId)
+        {
+            return this.GetUniqueUsersInDataset(datasetId).Count();
+        }
+
+        public List<int> GetUniqueUsersInDataset(int datasetId)
         {
             var datasetData = this.GetDatasetData(datasetId);
+            return datasetData.Select(d => d.Id1).Union(datasetData.Select(d => d.Id2)).Distinct().ToList();
+        }
 
-            return datasetData.Select(d => d.Id1).Union(datasetData.Select(d => d.Id2)).Distinct().Count();
+        public List<Tuple<int, int>> GetConnections(int datasetId)
+        {
+            return this.GetDatasetData(datasetId).Select(c => Tuple.Create(c.Id1, c.Id2)).ToList();
         }
 
         public double GetAverageFriendCountInDataset(int datasetId)
@@ -98,7 +110,7 @@ namespace SocNetAnalyzer.Repositories
             var fullConnections = datasetData.Select(d => Tuple.Create(d.Id1, d.Id2))
                 .Union(datasetData.Select(d => Tuple.Create(d.Id2, d.Id1))).ToList();
             var grouped = fullConnections.GroupBy(f => f.Item1);
-            
+
             var result = grouped.Select(g => new {Id = g.Key, Count = g.Count()})
                 .Average(c => c.Count);
 
@@ -133,7 +145,7 @@ namespace SocNetAnalyzer.Repositories
                             count = 0;
                         }
                     }
-                    
+
                     this.db.Datasets.Remove(this.db.Datasets.Find(datasetId));
                     await this.db.SaveChangesAsync();
 
