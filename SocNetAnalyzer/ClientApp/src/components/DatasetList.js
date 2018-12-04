@@ -3,6 +3,7 @@ import { Table, Button, ButtonGroup } from 'reactstrap'
 import NoteEditor from './DatasetEditor';
 import { format } from 'date-fns'
 import StatsViewerContainer from '../containers/StatsViewerContainer';
+import GraphViewerContainer from '../containers/GraphViewerContainer';
 
 
 const DatasetStatus = {
@@ -20,6 +21,7 @@ export default class DatasetsList extends Component {
         this.state = {
             editorOpened: false,
             statsOpened: false,
+            graphOpened: false,
             currentDataset: {}
         }
     }
@@ -42,7 +44,7 @@ export default class DatasetsList extends Component {
     }
 
     closeStats = () => {
-        this.setState({            
+        this.setState({
             statsOpened: false
         });
     }
@@ -51,14 +53,27 @@ export default class DatasetsList extends Component {
         const { datasets, loadDatasetStats } = this.props;
         loadDatasetStats(datasetId);
 
-        this.setState({            
+        this.setState({
             statsOpened: true,
             currentDataset: datasets.get(datasetId),
         });
     }
 
+    closeGraph = () => {
+        this.setState({
+            graphOpened: false
+        });
+    }
 
+    openGraph = datasetId => {
+        const { datasets, loadDatasetConnections } = this.props;
+        loadDatasetConnections(datasetId);
 
+        this.setState({
+            graphOpened: true,
+            currentDataset: datasets.get(datasetId),
+        });
+    }
 
     renderActions = dataset => {
         const { deleteDataset } = this.props;
@@ -70,6 +85,12 @@ export default class DatasetsList extends Component {
                     size="sm"
                     onClick={() => this.openStats(dataset.id)}>
                     Statistics
+                </Button>
+                <Button
+                    disabled={dataset.status !== DatasetStatus.Imported}
+                    size="sm"
+                    onClick={() => this.openGraph(dataset.id)}>
+                    Graph
                 </Button>
                 <Button
                     disabled={NotDeletableStatuses.includes(dataset.status)}
@@ -121,7 +142,7 @@ export default class DatasetsList extends Component {
     }
 
     render() {
-        const { editorOpened, currentDataset, statsOpened } = this.state;
+        const { editorOpened, currentDataset, statsOpened, graphOpened } = this.state;
         const { importDataset, loadDatasets } = this.props;
 
         return (
@@ -158,6 +179,10 @@ export default class DatasetsList extends Component {
                 <StatsViewerContainer
                     isOpen={statsOpened}
                     toggle={this.closeStats}
+                    dataset={currentDataset} />
+                <GraphViewerContainer
+                    isOpen={graphOpened}
+                    toggle={this.closeGraph}
                     dataset={currentDataset} />
             </Table>
 

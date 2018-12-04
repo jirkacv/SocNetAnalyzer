@@ -13,7 +13,7 @@ const mapStateToProps = (state, props) => {
 
         datasetStats.push({ name: "Sample size", value: s.sampleSize });
         datasetStats.push({ name: "Unique users", value: s.uniqueUsers });
-        datasetStats.push({ name: "Average friend count", value: new Number(s.averageFriendCount).toFixed(2) });
+        datasetStats.push({ name: "Average friend count", value: Number(s.averageFriendCount).toFixed(2) });
     }
 
     return {

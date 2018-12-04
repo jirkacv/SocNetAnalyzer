@@ -9,7 +9,7 @@ export default class StatisticsTable extends Component {
         if (!datasetStats || (datasetStats && datasetStats.length === 0)) {
             return (
                 <tr>
-                    <td>There are no statistics to show</td>
+                    <td>Loading...</td>
                 </tr>
 
             );

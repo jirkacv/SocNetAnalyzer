@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import DatasetList from '../components/DatasetList';
-import { loadDatasets, importDataset, deleteDataset, loadDatasetStats } from '../actions/datasetActions';
+import { loadDatasets, importDataset, deleteDataset, loadDatasetStats, loadDatasetConnections } from '../actions/datasetActions';
 
 
 const mapStateToProps = state => {
@@ -12,7 +12,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToActions = dispatch => (
-    bindActionCreators({ loadDatasets, importDataset, deleteDataset, loadDatasetStats }, dispatch)
+    bindActionCreators({
+        loadDatasets,
+        importDataset,
+        deleteDataset,
+        loadDatasetStats,
+        loadDatasetConnections
+    }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToActions)(DatasetList)

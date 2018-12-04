@@ -18,7 +18,11 @@ import {
     LOAD_DATASET_STATS_SUCCESS,
     LOAD_DATASET_STATS_ERROR,
     LOAD_DATASET_STATS_COMPLETE,
-
+    
+    LOAD_DATASET_CONNECTIONS_START,
+    LOAD_DATASET_CONNECTIONS_SUCCESS,
+    LOAD_DATASET_CONNECTIONS_ERROR,
+    LOAD_DATASET_CONNECTIONS_COMPLETE,
 
     DELETE_DATASET_START,
     DELETE_DATASET_SUCCESS,
@@ -179,4 +183,32 @@ export const loadDatasetStats = datasetId => dispatch => {
         .then(resp => dispatch(loadDatasetStatsSuccess(datasetId, resp.data)))
         .catch(err => dispatch(loadDatasetStatsError(err)))
         .then(() => dispatch(loadDatasetStatsComplete()));
+};
+
+const loadDatasetConnectionsStart = () => ({
+    type: LOAD_DATASET_CONNECTIONS_START
+});
+
+const loadDatasetConnectionsSuccess = (datasetId, datasetConnections) => ({
+    type: LOAD_DATASET_CONNECTIONS_SUCCESS,
+    datasetConnections,
+    datasetId,
+});
+
+const loadDatasetConnectionsError = error => ({
+    type: LOAD_DATASET_CONNECTIONS_ERROR,
+    error,
+});
+
+const loadDatasetConnectionsComplete = () => ({
+    type: LOAD_DATASET_CONNECTIONS_COMPLETE
+});
+
+export const loadDatasetConnections = datasetId => dispatch => {
+    dispatch(loadDatasetConnectionsStart());
+
+    axios.get(getDatasetsUrl(`connections?datasetId=${datasetId}`))
+        .then(resp => dispatch(loadDatasetConnectionsSuccess(datasetId, resp.data)))
+        .catch(err => dispatch(loadDatasetConnectionsError(err)))
+        .then(() => dispatch(loadDatasetConnectionsComplete()));
 };

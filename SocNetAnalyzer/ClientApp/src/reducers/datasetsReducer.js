@@ -3,13 +3,15 @@ import {
     CREATE_DATASET_SUCCESS,
     IMPORT_DATASET_SUCCESS,
     DELETE_DATASET_START,
-    LOAD_DATASET_STATS_SUCCESS
+    LOAD_DATASET_STATS_SUCCESS,
+    LOAD_DATASET_CONNECTIONS_SUCCESS
 } from '../actions/actionTypes'
 
 
 const initialState = {
     items: new Map([]),
     stats: new Map([]),
+    connections: new Map([]),
 };
 
 export default (state = initialState, action) => {
@@ -58,6 +60,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 stats: new Map(stats),
+            };
+        }
+
+        case LOAD_DATASET_CONNECTIONS_SUCCESS: {
+            let connections = state.connections;
+            connections.set(action.datasetId, action.datasetConnections);
+
+            return {
+                ...state,
+                connections: new Map(connections),
             };
         }
 

@@ -26,6 +26,12 @@ namespace SocNetAnalyzer.Controllers
             return this.datasetService.GetDatasets();
         }
 
+        [HttpGet("connections")]
+        public DatasetConnections GetDatasetConnections(int datasetId)
+        {
+            return this.datasetService.GetDatasetConnections(datasetId);
+        }
+
         [HttpDelete("delete")]
         public async Task Delete(int datasetId)
         {

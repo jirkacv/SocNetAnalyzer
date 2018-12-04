@@ -17,6 +17,8 @@ namespace SocNetAnalyzer.Services
 
         DatasetStatistics GetDatasetStatistics(int datasetId);
 
+        DatasetConnections GetDatasetConnections(int datasetId);
+
         Task DeleteDataset(int datasetId);
 
         IList<Dataset> GetDatasets();
@@ -56,6 +58,15 @@ namespace SocNetAnalyzer.Services
                 AverageFriendCount = this.datasetRepository.GetAverageFriendCountInDataset(datasetId),
                 UniqueUsers = this.datasetRepository.GetUniqueUserCountInDataset(datasetId),
                 SampleSize = this.datasetRepository.GetDatasetConnectionCount(datasetId),
+            };
+        }
+
+        public DatasetConnections GetDatasetConnections(int datasetId)
+        {
+            return new DatasetConnections
+            {
+                Ids = this.datasetRepository.GetUniqueUsersInDataset(datasetId),
+                Links = this.datasetRepository.GetConnections(datasetId)
             };
         }
 
