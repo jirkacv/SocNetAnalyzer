@@ -1,42 +1,66 @@
 import React, { Component } from 'react';
-import { Graph } from 'react-d3-graph';
+import Graph from 'react-graph-vis';
 
 export default class ConnectionGraph extends Component {
 
     config = {
-        d3: {
-            gravity: -10,
+        layout: {
+            hierarchical: false,
+            improvedLayout: false,
         },
-        nodeHighlightBehavior: true,
-        node: {
-            color: 'lightgreen',
-            size: 80,
-            highlightStrokeColor: 'blue',
-            renderLabel: false,
+        edges: {
+            arrows: {
+                to: false,
+                from: false,
+            },
+            color: {
+                color: 'lightblue'
+            },
         },
-        link: {
-            highlightColor: 'lightblue'
+        nodes: {
+            color: '#3B5998',
+            font: {
+                color: 'white',
+            }
         },
-        height: 700,
-        width: 800,
-        // staticGraph: true
+        interaction: {
+            dragNodes: false,
+        },
+        physics: {
+            enabled: true,
+            solver: 'barnesHut',
+            barnesHut: {
+                avoidOVerlap: 1,
+                damping: 1
+            },
+            stabilization: {
+                enabled: true,
+                iterations: 100,
+                onlyDynamicEdges: false,
+                fit: true
+            },
+        },
     };
+
 
     render() {
         const { datasetConnections } = this.props;
 
         if (datasetConnections.loaded) {
+            this.config.physics.enabled = datasetConnections.edges.length < 1000;
+
             return (
                 <Graph
                     id='connection-graph'
-                    data={datasetConnections}
-                    config={this.config}
-                    width={840} />
+                    graph={datasetConnections}
+                    options={this.config}
+                    style={{ height: 700, width: 795 }}
+                />
             );
         } else {
-            return "Loading...";
+            return <div style={{ padding: '1rem' }}>Loading...</div>;
         }
 
-        
+
     }
 }

@@ -13,7 +13,12 @@ export default class DatasetEditor extends Component {
 
     handleTextChange = e => this.setState({ name: e.target.value });
 
-    handleFileChange = e => this.setState({ file: e.target.files[0] });
+    handleFileChange = e => {
+        const { name } = this.state;
+        let file = e.target.files[0];
+
+        this.setState({ file, name: ( name === '' ? file.name : name) });
+    }
 
     closeDialog = () => {
         const { toggle } = this.props;

@@ -16,7 +16,7 @@ export default class GraphViewer extends Component {
             <Modal isOpen={isOpen} toggle={this.closeDialog} size="lg">
                 <ModalHeader >{dataset.name}</ModalHeader>
                 <ModalBody style={{padding: 0}}>
-                    <ConnectionGraph datasetConnections={datasetConnections} />
+                    <ConnectionGraph datasetConnections={isOpen ? datasetConnections : {}} />
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={this.closeDialog}>Close</Button>

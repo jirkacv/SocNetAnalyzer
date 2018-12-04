@@ -3,7 +3,7 @@ import { Container, Row } from 'reactstrap';
 
 import DatasetsListContainer from '../containers/DatasetsListContainer';
 
-export default class Notes extends Component {
+export default class Datasets extends Component {
     render() {
         return (
             <Container>

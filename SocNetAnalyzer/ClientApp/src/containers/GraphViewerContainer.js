@@ -5,7 +5,7 @@ import GraphViewer from './../components/GraphViewer';
 const mapStateToProps = (state, props) => {
     let datasetConnections = {
         nodes: [],
-        links: [],
+        edges: [],
         loaded: false,
     };
 
@@ -14,10 +14,10 @@ const mapStateToProps = (state, props) => {
 
     if (connections.has(id)) {
         let connection = connections.get(id);
-        datasetConnections.nodes = connection.ids.map(id =>  ({ id: id.toString() }));
-        datasetConnections.links = connection.links.map(l => ({ source: l.item1.toString(), target: l.item2.toString() }));
-        datasetConnections.loaded = true;
 
+        datasetConnections.nodes = connection.ids.map(id => ({ id: id, label: id.toString() }));
+        datasetConnections.edges = connection.links.map(l => ({ from: l.item1, to: l.item2 }));
+        datasetConnections.loaded = true;
     }
 
     return {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, ButtonGroup } from 'reactstrap'
-import NoteEditor from './DatasetEditor';
+import DatasetEditor from './DatasetEditor';
 import { format } from 'date-fns'
 import StatsViewerContainer from '../containers/StatsViewerContainer';
 import GraphViewerContainer from '../containers/GraphViewerContainer';
@@ -172,7 +172,7 @@ export default class DatasetsList extends Component {
                 <tbody>
                     {this.renderRows()}
                 </tbody>
-                <NoteEditor
+                <DatasetEditor
                     isOpen={editorOpened}
                     toggle={this.closeEditor}
                     createDataset={importDataset} />
