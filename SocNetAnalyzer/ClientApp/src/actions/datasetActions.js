@@ -167,9 +167,10 @@ const loadDatasetStatsSuccess = (datasetId, datasetStats) => ({
     datasetId,
 });
 
-const loadDatasetStatsError = error => ({
+const loadDatasetStatsError = (datasetId, error) => ({
     type: LOAD_DATASET_STATS_ERROR,
     error,
+    datasetId,
 });
 
 const loadDatasetStatsComplete = () => ({
@@ -181,7 +182,7 @@ export const loadDatasetStats = datasetId => dispatch => {
 
     axios.get(getDatasetsUrl(`statistics?datasetId=${datasetId}`))
         .then(resp => dispatch(loadDatasetStatsSuccess(datasetId, resp.data)))
-        .catch(err => dispatch(loadDatasetStatsError(err)))
+        .catch(err => dispatch(loadDatasetStatsError(datasetId, err)))
         .then(() => dispatch(loadDatasetStatsComplete()));
 };
 
@@ -195,9 +196,10 @@ const loadDatasetConnectionsSuccess = (datasetId, datasetConnections) => ({
     datasetId,
 });
 
-const loadDatasetConnectionsError = error => ({
+const loadDatasetConnectionsError = (datasetId, error) => ({
     type: LOAD_DATASET_CONNECTIONS_ERROR,
     error,
+    datasetId,
 });
 
 const loadDatasetConnectionsComplete = () => ({
@@ -209,6 +211,6 @@ export const loadDatasetConnections = datasetId => dispatch => {
 
     axios.get(getDatasetsUrl(`connections?datasetId=${datasetId}`))
         .then(resp => dispatch(loadDatasetConnectionsSuccess(datasetId, resp.data)))
-        .catch(err => dispatch(loadDatasetConnectionsError(err)))
+        .catch(err => dispatch(loadDatasetConnectionsError(datasetId, err)))
         .then(() => dispatch(loadDatasetConnectionsComplete()));
 };

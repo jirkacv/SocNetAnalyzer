@@ -58,7 +58,12 @@ export default class ConnectionGraph extends Component {
                 />
             );
         } else {
-            return <div style={{ padding: '1rem' }}>Loading...</div>;
+            let message = 'Loading...'
+            if (datasetConnections.isError) {
+                message = 'There was an error while loading graph data';
+            }
+            
+            return <div style={{ padding: '1rem' }}>{message}</div>;
         }
 
 

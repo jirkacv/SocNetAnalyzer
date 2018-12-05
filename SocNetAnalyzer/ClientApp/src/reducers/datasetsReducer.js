@@ -4,7 +4,9 @@ import {
     IMPORT_DATASET_SUCCESS,
     DELETE_DATASET_START,
     LOAD_DATASET_STATS_SUCCESS,
-    LOAD_DATASET_CONNECTIONS_SUCCESS
+    LOAD_DATASET_CONNECTIONS_SUCCESS,
+    LOAD_DATASET_CONNECTIONS_ERROR,
+    LOAD_DATASET_STATS_ERROR
 } from '../actions/actionTypes'
 
 
@@ -54,7 +56,7 @@ export default (state = initialState, action) => {
         }
 
         case LOAD_DATASET_STATS_SUCCESS: {
-            let stats = state.stats;
+            const { stats } = state;
             stats.set(action.datasetId, action.datasetStats);
 
             return {
@@ -63,9 +65,35 @@ export default (state = initialState, action) => {
             };
         }
 
+        case LOAD_DATASET_STATS_ERROR: {
+            const { stats } = state;
+            let stat = stats.get(action.datasetId) || {};
+            stat.isError = true;
+
+            stats.set(action.datasetId, stat);
+
+            return {
+                ...state,
+                stats: new Map(stats),
+            };
+        }
+
         case LOAD_DATASET_CONNECTIONS_SUCCESS: {
-            let connections = state.connections;
+            const { connections } = state;
             connections.set(action.datasetId, action.datasetConnections);
+
+            return {
+                ...state,
+                connections: new Map(connections),
+            };
+        }
+
+        case LOAD_DATASET_CONNECTIONS_ERROR: {
+            const { connections } = state;
+            let connection = connections.get(action.datasetId) || {};
+            connection.isError = true;
+
+            connections.set(action.datasetId, connection);
 
             return {
                 ...state,
